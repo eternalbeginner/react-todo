@@ -1,5 +1,12 @@
+import { Home } from './containers';
+import 'remixicon/fonts/remixicon.css';
+
 const App = () => {
-	return <h1>Hello from todo!</h1>;
+	return (
+		<>
+			<Home />
+		</>
+	);
 };
 
 export default App;
