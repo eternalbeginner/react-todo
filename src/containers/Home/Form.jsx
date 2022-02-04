@@ -1,4 +1,5 @@
 import { Component, createRef } from 'react';
+import { Button, Input } from '../../components';
 
 class Form extends Component {
 	constructor(props) {
@@ -69,22 +70,19 @@ class Form extends Component {
 				ref={this.form}
 				onSubmit={this.onSubmitHandler}
 			>
-				<input
-					type='text'
-					className='form__input'
+				<Input.Text
 					name='text'
 					value={values.text}
-					autoComplete='off'
-					autoCorrect='off'
 					onChange={this.onChangeHandler}
 				/>
 				<div className='form__cta'>
-					<button type='submit' className='cta__save'>
-						Save
-					</button>
-					<button type='button' className='cta__cancel' onClick={toggleForm}>
-						Cancel
-					</button>
+					<Button.Plain type='submit' name='cta__save' text='Save' />
+					<Button.Plain
+						type='button'
+						name='cta__cancel'
+						text='cancel'
+						onClick={toggleForm}
+					/>
 				</div>
 			</form>
 		);
