@@ -1,12 +1,12 @@
-import { Home } from './containers';
-import 'remixicon/fonts/remixicon.css';
+import { Home } from "./containers";
+import "remixicon/fonts/remixicon.css";
 
 const App = () => {
-	return (
-		<>
-			<Home />
-		</>
-	);
+  return (
+    <>
+      <Home />
+    </>
+  );
 };
 
 export default App;
