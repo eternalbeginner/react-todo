@@ -10,6 +10,9 @@ const Todo = ({ todos, deleteTodoHandler, updateTodoHandler }) => {
 						key={todo.id}
 						todo={todo}
 						onDelete={() => deleteTodoHandler(todo.id)}
+						onMark={() =>
+							updateTodoHandler(todo.id, { isMarked: !todo.isMarked })
+						}
 					>
 						{({ toggle }) => {
 							return (
