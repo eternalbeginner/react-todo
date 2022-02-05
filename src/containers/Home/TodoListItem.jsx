@@ -1,17 +1,13 @@
+import { Button } from '../../components';
+
 const TodoListItem = () => {
   return (
     <li className='list__item'>
-      <button type='button' className='item__marker'>
-        <i className='ri-check-line'></i>
-      </button>
+      <Button.Icon className='item__marker' icon='ri-check-line' />
       <span className='item__text'>I want to do something today!</span>
       <div className='item__cta'>
-        <button type='button' className='cta__delete'>
-          <i className='ri-delete-bin-line'></i>
-        </button>
-        <button type='button' className='cta__edit'>
-          <i className='ri-edit-line'></i>
-        </button>
+        <Button.Icon className='cta__delete' icon='ri-delete-bin-line' />
+        <Button.Icon className='cta__delete' icon='ri-edit-line' />
       </div>
     </li>
   );
