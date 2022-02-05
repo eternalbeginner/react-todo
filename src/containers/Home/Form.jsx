@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Button } from '../../components';
+import { Button, Input } from '../../components';
 
 class Form extends Component {
   render() {
@@ -7,7 +7,7 @@ class Form extends Component {
 
     return (
       <form className={`${name}__form`}>
-        <input type='text' className='form__input' />
+        <Input.Text name='text' placeholder='What do you want to do?' />
         <div className='form__cta'>
           <Button.Plain className='cta__cancel' text='Cancel' />
           <Button.Plain type='submit' className='cta__save' text='Save' />
