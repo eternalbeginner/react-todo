@@ -3,9 +3,9 @@ import { Component } from 'react';
 import Footer from './Footer';
 import Header from './Header';
 import TodoList from './TodoList';
+import Form from './Form';
 
 import { createTodo, deleteTodo, updateTodo } from './Model';
-import Form from './Form';
 
 class Home extends Component {
   constructor(props) {
