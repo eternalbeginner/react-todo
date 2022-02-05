@@ -13,6 +13,7 @@ const TodoList = ({ todos, deleteTodo, updateTodo }) => {
             <TodoListItem todo={todo} deleteTodo={deleteTodo} updateTodo={updateTodo}>
               {(toggle) => (
                 <Form
+                  mode='update'
                   hideForm={toggle}
                   onSubmit={submitHandler}
                   defaultValues={{
