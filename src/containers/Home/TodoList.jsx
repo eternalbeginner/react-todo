@@ -1,18 +1,11 @@
 import { List } from '../../components';
 import TodoListItem from './TodoListItem';
 
-const TodoList = () => {
-  const todos = [
-    {
-      id: 1,
-      text: 'lol'
-    }
-  ];
-
+const TodoList = ({ todos }) => {
   return (
     <section className='todo'>
       <List items={todos} name='todo'>
-        {(todo) => <TodoListItem />}
+        {(todo) => <TodoListItem todo={todo} />}
       </List>
     </section>
   );
