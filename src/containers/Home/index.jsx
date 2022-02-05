@@ -1,92 +1,60 @@
-import { Component } from "react";
-import { v4 as uuid } from "uuid";
-import Footer from "./Footer";
-import Form from "./Form";
-import Header from "./Header";
-import Todo from "./Todo";
+import { Component } from 'react';
+
+import Footer from './Footer';
+import Header from './Header';
+import TodoList from './TodoList';
+import Form from './Form';
+
+import { createTodo, deleteTodo, updateTodo } from './Model';
 
 class Home extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      todos: [],
+      todos: [
+        {
+          id: 1,
+          text: 'hello world',
+          isMarked: false
+        }
+      ]
     };
 
-    this.createTodo = this.createTodo.bind(this);
-    this.deleteTodo = this.deleteTodo.bind(this);
-    this.updateTodo = this.updateTodo.bind(this);
+    this.create = this.create.bind(this);
+    this.delete = this.delete.bind(this);
+    this.update = this.update.bind(this);
   }
 
-  createTodo(todo) {
-    if (!todo) {
-      return;
-    }
-
-    this.setState((prevState) => {
-      const now = new Date().getTime();
-
-      return {
-        todos: [
-          ...prevState.todos,
-          {
-            id: uuid(),
-            isMarked: false,
-            createdAt: now,
-            updatedAt: now,
-            ...todo,
-          },
-        ],
-      };
-    });
+  create(todo) {
+    this.setState((prevState) => ({
+      todos: createTodo([...prevState.todos], todo)
+    }));
   }
 
-  deleteTodo(todoId) {
-    this.setState((prevState) => {
-      return {
-        todos: [...prevState.todos].filter(({ id }) => id !== todoId),
-      };
-    });
+  delete(todoId) {
+    this.setState((prevState) => ({
+      todos: deleteTodo([...prevState.todos], todoId)
+    }));
   }
 
-  updateTodo(todoId, todo) {
-    this.setState((prevState) => {
-      const todos = [...prevState.todos];
-      const index = todos.findIndex(({ id }) => id === todoId);
-
-      if (index >= 0) {
-        todos[index] = {
-          ...todos[index],
-          ...todo,
-          updatedAt: new Date().getTime(),
-        };
-      }
-
-      return { todos };
-    });
+  update(todoId, todo) {
+    this.setState((prevState) => ({
+      todos: updateTodo([...prevState.todos], todoId, todo)
+    }));
   }
 
   render() {
     const { todos } = this.state;
+
     return (
-      <div>
+      <>
         <Header />
-        <Todo
-          todos={todos}
-          deleteTodoHandler={this.deleteTodo}
-          updateTodoHandler={this.updateTodo}
-        />
+        <TodoList todos={todos} deleteTodo={this.delete} updateTodo={this.update} />
         <Footer>
-          {({ toggle }) => {
-            return (
-              <Form
-                onSubmit={(obj) => this.createTodo(obj)}
-                toggleForm={toggle}
-              />
-            );
-          }}
+          {(toggle) => <Form hideForm={toggle} onSubmit={(obj) => this.create(obj)} />}
         </Footer>
-      </div>
+      </>
     );
   }
 }

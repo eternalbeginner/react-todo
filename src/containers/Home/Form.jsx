@@ -1,5 +1,9 @@
-import { Component, createRef } from "react";
-import { Button, Input } from "../../components";
+import { Component, createRef } from 'react';
+import { Button, Input } from '../../components';
+
+const defaultValues = {
+  text: ''
+};
 
 class Form extends Component {
   constructor(props) {
@@ -7,90 +11,80 @@ class Form extends Component {
 
     this.state = {
       values: {
-        text: "",
-      },
+        text: ''
+      }
     };
 
-    this.form = createRef();
-    this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.onSubmitHandler = this.onSubmitHandler.bind(this);
+    this.input = createRef();
+    this.changeHandler = this.changeHandler.bind(this);
+    this.submitHandler = this.submitHandler.bind(this);
   }
 
-  onChangeHandler(event) {
+  changeHandler(event) {
     const { name, value } = event.target;
 
-    this.setState((prevState) => {
-      return {
-        values: {
-          ...prevState.values,
-          [name]: value,
-        },
-      };
-    });
+    this.setState((prevState) => ({
+      values: {
+        ...prevState.values,
+        [name]: value
+      }
+    }));
   }
 
-  onSubmitHandler(event) {
+  submitHandler(event) {
     event.preventDefault();
-    this.props.onSubmit(this.state.values);
-    this.#_resetForm();
-  }
 
-  #_isUpdateMode() {
-    return this.props.mode === "update";
-  }
+    const { onSubmit } = this.props;
+    const { values } = this.state;
 
-  #_resetForm() {
-    const values = {};
+    onSubmit(values);
 
-    for (const name in this.state.values) {
-      values[name] = "";
-    }
-
-    this.setState({ values }, () => {
-      this.#_isUpdateMode() && this.props.toggleForm();
+    this.setState({ values: defaultValues }, () => {
+      this.input.current.focus();
+      this.props.mode &&
+        this.props.mode === 'update' &&
+        this.props.hideForm &&
+        this.props.hideForm();
     });
   }
 
   componentDidMount() {
-    this.#_isUpdateMode() &&
-      this.setState((prevState) => {
-        return { values: { ...prevState.values, text: this.props.todoText } };
-      });
+    if (this.props.defaultValues) {
+      const { defaultValues } = this.props;
 
-    this.form.current[0].focus();
+      this.setState((prevState) => ({
+        values: { ...prevState.values, ...defaultValues }
+      }));
+    }
+
+    this.input.current.focus();
+  }
+
+  componentWillUnmount() {
+    document.querySelector('form').removeEventListener('submit', this.submitHandler);
+    document.querySelector('input').removeEventListener('change', this.changeHandler);
   }
 
   render() {
+    const { name, hideForm } = this.props;
     const { values } = this.state;
-    const { toggleForm } = this.props;
 
     return (
-      <form
-        className="footer__form"
-        ref={this.form}
-        onSubmit={this.onSubmitHandler}
-      >
+      <form className={`${name}__form`} onSubmit={this.submitHandler}>
         <Input.Text
-          name="text"
+          name='text'
+          placeholder='What do you want to do?'
+          ref={this.input}
           value={values.text}
-          onChange={this.onChangeHandler}
+          onChange={this.changeHandler}
         />
-        <div className="form__cta">
-          <Button.Plain type="submit" name="cta__save" text="Save" />
-          <Button.Plain
-            type="button"
-            name="cta__cancel"
-            text="cancel"
-            onClick={toggleForm}
-          />
+        <div className='form__cta'>
+          <Button.Plain className='cta__cancel' text='Cancel' onClick={hideForm} />
+          <Button.Plain type='submit' className='cta__save' text='Save' />
         </div>
       </form>
     );
   }
 }
-
-Form.defaultProps = {
-  mode: "create",
-};
 
 export default Form;

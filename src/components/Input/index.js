@@ -1,1 +1,1 @@
-export { default as Text } from "./Textbox";
+export { default as Text } from './InputText';
