@@ -1,20 +1,14 @@
-import Form from './Form';
+import { Button } from '../../components';
+import withToggler from '../../hoc/withToggler';
 
-const Footer = ({ createTodo }) => {
-  const onSubmitHandler = (obj) => {
-    createTodo(obj);
-  };
-
+const Footer = ({ toggle }) => {
   return (
     <footer className='footer'>
-      <Form name='footer' onSubmit={onSubmitHandler} />
       <div className='footer__cta'>
-        <button type='button' className='cta__create'>
-          Add new todo
-        </button>
+        <Button.Plain className='cta__create' text='Add new todo' onClick={toggle} />
       </div>
     </footer>
   );
 };
 
-export default Footer;
+export default withToggler(Footer);

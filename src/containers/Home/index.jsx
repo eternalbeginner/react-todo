@@ -5,6 +5,7 @@ import Header from './Header';
 import TodoList from './TodoList';
 
 import { createTodo, deleteTodo, updateTodo } from './Model';
+import Form from './Form';
 
 class Home extends Component {
   constructor(props) {
@@ -50,7 +51,9 @@ class Home extends Component {
       <>
         <Header />
         <TodoList todos={todos} deleteTodo={this.delete} updateTodo={this.update} />
-        <Footer createTodo={this.create} />
+        <Footer>
+          {(toggle) => <Form hideForm={toggle} onSubmit={(obj) => this.create(obj)} />}
+        </Footer>
       </>
     );
   }

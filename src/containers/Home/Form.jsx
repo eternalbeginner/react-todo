@@ -38,8 +38,13 @@ class Form extends Component {
     const { values } = this.state;
 
     onSubmit(values);
+
     this.setState({ values: defaultValues }, () => {
       this.input.current.focus();
+      this.props.mode &&
+        this.props.mode === 'update' &&
+        this.props.hideForm &&
+        this.props.hideForm();
     });
   }
 
@@ -61,7 +66,7 @@ class Form extends Component {
   }
 
   render() {
-    const { name } = this.props;
+    const { name, hideForm } = this.props;
     const { values } = this.state;
 
     return (
@@ -74,7 +79,7 @@ class Form extends Component {
           onChange={this.changeHandler}
         />
         <div className='form__cta'>
-          <Button.Plain className='cta__cancel' text='Cancel' />
+          <Button.Plain className='cta__cancel' text='Cancel' onClick={hideForm} />
           <Button.Plain type='submit' className='cta__save' text='Save' />
         </div>
       </form>
