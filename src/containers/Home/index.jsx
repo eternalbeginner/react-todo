@@ -1,62 +1,35 @@
-import { Component } from 'react';
+import { useState } from 'react';
+import { create, remove, update } from './Model';
+import { TodosProvider } from '../../context/todosContext';
 
-import Footer from './Footer';
 import Header from './Header';
+import Footer from './Footer';
 import TodoList from './TodoList';
-import Form from './Form';
 
-import { createTodo, deleteTodo, updateTodo } from './Model';
+const Home = () => {
+  const [todos, setTodos] = useState([]);
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      todos: [
-        {
-          id: 1,
-          text: 'hello world',
-          isMarked: false
-        }
-      ]
-    };
-
-    this.create = this.create.bind(this);
-    this.delete = this.delete.bind(this);
-    this.update = this.update.bind(this);
+  function createTodo(todo) {
+    setTodos((prevTodos) => create(prevTodos, todo));
   }
 
-  create(todo) {
-    this.setState((prevState) => ({
-      todos: createTodo([...prevState.todos], todo)
-    }));
+  function removeTodo(todoId) {
+    setTodos((prevTodos) => remove(prevTodos, todoId));
   }
 
-  delete(todoId) {
-    this.setState((prevState) => ({
-      todos: deleteTodo([...prevState.todos], todoId)
-    }));
+  function updateTodo(todoId, todo) {
+    setTodos((prevTodos) => update(prevTodos, todoId, todo));
   }
 
-  update(todoId, todo) {
-    this.setState((prevState) => ({
-      todos: updateTodo([...prevState.todos], todoId, todo)
-    }));
-  }
-
-  render() {
-    const { todos } = this.state;
-
-    return (
-      <>
+  return (
+    <>
+      <TodosProvider value={{ todos, createTodo, removeTodo, updateTodo }}>
         <Header />
-        <TodoList todos={todos} deleteTodo={this.delete} updateTodo={this.update} />
-        <Footer>
-          {(toggle) => <Form hideForm={toggle} onSubmit={(obj) => this.create(obj)} />}
-        </Footer>
-      </>
-    );
-  }
-}
+        <TodoList />
+        <Footer />
+      </TodosProvider>
+    </>
+  );
+};
 
 export default Home;

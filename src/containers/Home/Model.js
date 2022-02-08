@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-export const createTodo = (todos, todo) => {
+export const create = (todos, todo) => {
   const now = new Date().getTime();
 
   return [
@@ -15,21 +15,22 @@ export const createTodo = (todos, todo) => {
   ];
 };
 
-export const deleteTodo = (todos, todoId) => {
+export const remove = (todos, todoId) => {
   return [...todos].filter(({ id }) => id !== todoId);
 };
 
-export const updateTodo = (todos, todoId, todo) => {
-  const index = todos.findIndex(({ id }) => id === todoId);
+export const update = (todos, todoId, todo) => {
+  const copy = [...todos];
+  const index = copy.findIndex(({ id }) => id === todoId);
   const now = new Date().getTime();
 
   if (index >= 0) {
-    todos[index] = {
-      ...todos[index],
+    copy[index] = {
+      ...copy[index],
       ...todo,
       updatedAt: now
     };
   }
 
-  return todos;
+  return copy;
 };
